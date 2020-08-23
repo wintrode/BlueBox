@@ -23,6 +23,12 @@ outfile=$BB_DIR/USPS_DATA/$state/$MONTH/$DATE.$BB_OUT_TYPE
 outdir=`dirname $outfile`
 mkdir -p $outdir
 
+logdir=$BB_DIR/logs/$state/$MONTH
+mkdir -p $logdir
+
 bindir=`dirname "$(readlink -f "$0")"`
 
-python3 $bindir/location.py -Z $field -o $BB_OUT_TYPE $ziplist $outfile
+python3 $bindir/location.py -Z $field -o $BB_OUT_TYPE $ziplist $outfile &> $logdir/$DATE.log
+
+# to run daily at 2am, add the following to your /etc/crontab
+# 0 2 * * * /path/to/BlueBox/scripts/location.sh MD /opt/software/BlueBox/resources/MD_zipcodes.csv
