@@ -12,8 +12,10 @@ state=$1
 ziplist=$2
 field=$3
 
-if [[ -z $field ]]; then
-    field=ZIPCODE1
+if [[ ! -z $field ]]; then
+    field=-Z ZIPCODE1
+else
+    field=""
 fi
 
 # store data by state by month
@@ -28,7 +30,9 @@ mkdir -p $logdir
 
 bindir=`dirname "$(readlink -f "$0")"`
 
-python3 $bindir/location.py -Z $field -o $BB_OUT_TYPE $ziplist $outfile &> $logdir/$DATE.log
+python3 $bindir/location.py $field -o $BB_OUT_TYPE $ziplist $outfile &> $logdir/$DATE.log
+
+echo "Completed query for $DATE" >> $logdir/$DATE.log
 
 # to run daily at 2am, add the following to your /etc/crontab
-# 0 2 * * * /path/to/BlueBox/scripts/location.sh MD /opt/software/BlueBox/resources/MD_zipcodes.csv
+# 0 2 * * * /opt/software/BlueBox/scripts/location.sh MD /opt/software/BlueBox/resources/MD_zipcodes.csv ZIPCODE1
