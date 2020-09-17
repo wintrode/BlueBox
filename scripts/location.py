@@ -119,6 +119,9 @@ def main() :
                 if "locationID" not in ldata : continue
                 lid = ldata["locationID"]
                 zip = ldata["zip5"]
+                if zip != zipcode : # query returned results outside zip
+                    continue
+                
                 del ldata["locationServiceHours"]
                 del ldata["radius"]
                 del ldata["distance"]
@@ -134,6 +137,7 @@ def main() :
                         print("Inconsistent addresses for ", lid, ldata["address1"],locations[zip][date][lid]["address1"])
 
                 ldata["BB_QUERY_TS"]=timestamp
+                ldata["BB_QUERY_ZIP"]=zipcode
                 for h in ldata :
                     headers[h]=1
                     if h == "latitude" or h == "longitude" :

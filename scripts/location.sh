@@ -13,7 +13,7 @@ ziplist=$2
 field=$3
 
 if [[ ! -z $field ]]; then
-    field=-Z ZIPCODE1
+    field="-Z ZIPCODE1"
 else
     field=""
 fi
