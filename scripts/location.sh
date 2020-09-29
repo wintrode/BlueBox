@@ -30,7 +30,7 @@ mkdir -p $logdir
 
 bindir=`dirname "$(readlink -f "$0")"`
 
-python3 $bindir/location.py $field -o $BB_OUT_TYPE $ziplist $outfile &> $logdir/$DATE.log
+python3 $bindir/location.py $field -s $state -o $BB_OUT_TYPE $ziplist $outfile &> $logdir/$DATE.log
 
 echo "Completed query for $DATE" >> $logdir/$DATE.log
 

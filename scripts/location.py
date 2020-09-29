@@ -65,6 +65,9 @@ def main() :
                         help="Time in seconds to wait between USPS REST requests")
     parser.add_argument("-Z", "--zipcode-field", type=str, default=None,
                         help="If set, interpret input file as a csv and extract this field")
+    parser.add_argument("-s", "--state", type=str, default=None,
+                        help="If set, filter results to this state")
+    
     parser.add_argument("-o", "--output-type", type=str, default="json",
                         help="Data output type: [json, csv]")
     parser.add_argument("inputfile", type=str,
@@ -119,8 +122,11 @@ def main() :
                 if "locationID" not in ldata : continue
                 lid = ldata["locationID"]
                 zip = ldata["zip5"]
-                if zip != zipcode : # query returned results outside zip
+
+                if args.state is not None and ldata["state"] != args.state :
                     continue
+                #if zip != zipcode : # query returned results outside zip
+                #    continue
                 
                 del ldata["locationServiceHours"]
                 del ldata["radius"]
